@@ -83,7 +83,7 @@ class Database{
     return _firestore.collection('uploaded_videos').orderBy('createdAt', descending: true).snapshots().map((event){
       List<VideoPlayerController> retVal = <VideoPlayerController>[];
       event.docs.forEach((element) {
-        retVal.add(VideoPlayerController.network(VideoModel.fromDocumentSnapshot(element).videoUrl)..initialize());
+        retVal.add(VideoPlayerController.network(VideoModel.fromDocumentSnapshot(element).videoUrl)..initialize()..setLooping(true));
       });
       return retVal;
     });

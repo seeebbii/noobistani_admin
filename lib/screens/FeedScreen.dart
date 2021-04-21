@@ -11,7 +11,8 @@ class FeedScreen extends StatefulWidget {
   _FeedScreenState createState() => _FeedScreenState();
 }
 
-class _FeedScreenState extends State<FeedScreen> with AutomaticKeepAliveClientMixin<FeedScreen> {
+class _FeedScreenState extends State<FeedScreen>
+    with AutomaticKeepAliveClientMixin<FeedScreen> {
   final userController = Get.find<UserController>();
   late VideoPlayerController _controller;
   late File _video;
@@ -96,11 +97,16 @@ class _FeedScreenState extends State<FeedScreen> with AutomaticKeepAliveClientMi
                               child: VideoPlayer(
                                   controller.listOfControllers[index]),
                             ))
-                        : AspectRatio(
-                            aspectRatio: controller
-                                .listOfControllers[index].value.aspectRatio,
-                            child: VideoPlayer(
-                                controller.listOfControllers[index]),
+                        : GestureDetector(
+                            onTap: () {
+                              setState(() {});
+                            },
+                            child: AspectRatio(
+                              aspectRatio: controller
+                                  .listOfControllers[index].value.aspectRatio,
+                              child: VideoPlayer(
+                                  controller.listOfControllers[index]),
+                            ),
                           )
                   ],
                 ),
