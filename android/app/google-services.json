@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "505393786468",
+    "project_id": "noobistani-fda80",
+    "storage_bucket": "noobistani-fda80.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:505393786468:android:58bff9c37897bc24667971",
+        "android_client_info": {
+          "package_name": "com.codeminers.noobistani_admin"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "505393786468-duo3pe2e6h1vndj2qrnq5c91gh78fn74.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.codeminers.noobistani_admin",
+            "certificate_hash": "e43bb9337d27cc433eb306ea4dc8bcc86df38549"
+          }
+        },
+        {
+          "client_id": "505393786468-c9acue8i35771s31ca7sade9ahmqnnpr.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBddTW-4LdvQtecFlA9umq7n53KWGGfPBM"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "505393786468-c9acue8i35771s31ca7sade9ahmqnnpr.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
