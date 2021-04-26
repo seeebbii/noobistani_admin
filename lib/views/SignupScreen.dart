@@ -47,8 +47,10 @@ class _SignUpState extends State<SignUp> {
           child: TextFormField(
             key: ValueKey('username'),
             validator: (value) {
-              if (value!.isEmpty || value.length < 4) {
+              if (value!.isEmpty || value.length < 4 ) {
                 return 'Please enter at least 4 characters';
+              } if(value.length > 12){
+                return 'Cannot exceed 12 charachters';
               } else {
                 return null;
               }

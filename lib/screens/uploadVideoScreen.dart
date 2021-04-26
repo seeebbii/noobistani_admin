@@ -16,6 +16,7 @@ class UploadVideo extends StatefulWidget {
 
 class _UploadVideoState extends State<UploadVideo> {
   final userController = Get.find<UserController>();
+  String caption = "title";
 
   @override
   Widget build(BuildContext context) {
@@ -33,7 +34,7 @@ class _UploadVideoState extends State<UploadVideo> {
               borderRadius: BorderRadius.circular(100),
               child: TextButton(
                 onPressed: () {
-                  Database().uploadVideo(userController.currentUser.value, widget.file);
+                  Database().uploadVideo(userController.currentUser.value, widget.file, caption);
                 },
                 child: Text("Upload"),
                 autofocus: false,

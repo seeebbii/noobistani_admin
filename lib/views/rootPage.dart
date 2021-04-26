@@ -9,6 +9,7 @@ import 'package:noobistani_admin/screens/MessageScreen.dart';
 import 'package:noobistani_admin/screens/NewsScreen.dart';
 import 'package:noobistani_admin/screens/ProfileScreen.dart';
 import 'package:noobistani_admin/services/Database.dart';
+import 'package:noobistani_admin/utilities/MyBehavior.dart';
 
 class RootPage extends StatefulWidget {
   @override
@@ -42,94 +43,97 @@ class _RootPageState extends State<RootPage> {
   @override
   Widget build(BuildContext context) {
 
-    return PageView(
-      controller: pageController.pageController,
-      children: [
-        Scaffold(
-          appBar: AppBar(
-            title: Text("Noobistani"),
-            actions: [
-              IconButton(
-                onPressed: () {
-                  pageController.pageController.animateToPage(1, duration: Duration(milliseconds: 500), curve: Curves.fastOutSlowIn);
-                },
-                icon: Icon(Icons.messenger_outline_sharp),
-              ),
-            ],
-          ),
-          drawer: DrawerItems(
-            (ctx, i) {
-              setState(() {
-                index = i;
-              });
-            },
-          ),
-          body: IndexedStack(
-            children: screens,
-            index: index,
-          ),
-          bottomNavigationBar: BottomNavigationBar(
-            currentIndex: index,
-            items: [
-              BottomNavigationBarItem(
-                icon: Icon(
-                  Icons.announcement,
-                  color: Colors.grey,
+    return ScrollConfiguration(
+      behavior: MyBehavior(),
+      child: PageView(
+        controller: pageController.pageController,
+        children: [
+          Scaffold(
+            appBar: AppBar(
+              title: Text("Noobistani"),
+              actions: [
+                IconButton(
+                  onPressed: () {
+                    pageController.pageController.animateToPage(1, duration: Duration(milliseconds: 500), curve: Curves.fastOutSlowIn);
+                  },
+                  icon: Icon(Icons.messenger_outline_sharp),
                 ),
-                activeIcon: Icon(
-                  Icons.announcement,
-                  color: Colors.purpleAccent.shade100,
-                ),
-                title: Text(
-                  "News",
-                  style: TextStyle(
-                      color: index == 0
-                          ? Colors.purpleAccent.shade100
-                          : Colors.grey),
-                ),
-              ),
-              BottomNavigationBarItem(
+              ],
+            ),
+            drawer: DrawerItems(
+              (ctx, i) {
+                setState(() {
+                  index = i;
+                });
+              },
+            ),
+            body: IndexedStack(
+              children: screens,
+              index: index,
+            ),
+            bottomNavigationBar: BottomNavigationBar(
+              currentIndex: index,
+              items: [
+                BottomNavigationBarItem(
                   icon: Icon(
-                    Icons.dashboard,
+                    Icons.announcement,
                     color: Colors.grey,
                   ),
                   activeIcon: Icon(
-                    Icons.dashboard,
+                    Icons.announcement,
                     color: Colors.purpleAccent.shade100,
                   ),
                   title: Text(
-                    "Feed",
+                    "News",
                     style: TextStyle(
-                        color: index == 1
+                        color: index == 0
                             ? Colors.purpleAccent.shade100
                             : Colors.grey),
-                  )),
-              BottomNavigationBarItem(
-                  icon: Icon(
-                    Icons.person,
-                    color: Colors.grey,
                   ),
-                  activeIcon: Icon(
-                    Icons.person,
-                    color: Colors.purpleAccent.shade100,
-                  ),
-                  title: Text(
-                    "Profile",
-                    style: TextStyle(
-                        color: index == 2
-                            ? Colors.purpleAccent.shade100
-                            : Colors.grey),
-                  )),
-            ],
-            onTap: (i) {
-              setState(() {
-                index = i;
-              });
-            },
+                ),
+                BottomNavigationBarItem(
+                    icon: Icon(
+                      Icons.dashboard,
+                      color: Colors.grey,
+                    ),
+                    activeIcon: Icon(
+                      Icons.dashboard,
+                      color: Colors.purpleAccent.shade100,
+                    ),
+                    title: Text(
+                      "Feed",
+                      style: TextStyle(
+                          color: index == 1
+                              ? Colors.purpleAccent.shade100
+                              : Colors.grey),
+                    )),
+                BottomNavigationBarItem(
+                    icon: Icon(
+                      Icons.person,
+                      color: Colors.grey,
+                    ),
+                    activeIcon: Icon(
+                      Icons.person,
+                      color: Colors.purpleAccent.shade100,
+                    ),
+                    title: Text(
+                      "Profile",
+                      style: TextStyle(
+                          color: index == 2
+                              ? Colors.purpleAccent.shade100
+                              : Colors.grey),
+                    )),
+              ],
+              onTap: (i) {
+                setState(() {
+                  index = i;
+                });
+              },
+            ),
           ),
-        ),
-        MessageScreen()
-      ],
+          MessageScreen()
+        ],
+      ),
     );
   }
 }

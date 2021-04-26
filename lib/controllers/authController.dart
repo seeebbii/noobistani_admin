@@ -22,7 +22,7 @@ class AuthController extends GetxController{
   void createUser(String email, String userName, String password) async{
     try{
       UserCredential _authResult = await _auth.createUserWithEmailAndPassword(email: email.trim(), password: password);
-      UserModel _user = UserModel(id: _authResult.user!.uid, name: userName, email: email.trim(), imageUrl: "https://pbs.twimg.com/profile_images/1275457579078922240/BcW-3ekn.jpg", createdAt: Timestamp.now());
+      UserModel _user = UserModel(id: _authResult.user!.uid, name: userName, email: email.trim(), imageUrl: "https://pbs.twimg.com/profile_images/1275457579078922240/BcW-3ekn.jpg", createdAt: Timestamp.now(), bio: "Your Bio");
       if(await Database().createUserInDatabase(_user)){
         Get.put(UserController()).currentUser.value = _user;
         Get.back();
@@ -45,10 +45,14 @@ class AuthController extends GetxController{
         );
         _auth.signInWithCredential(credential);
         Future.delayed(Duration(milliseconds: 1000), () async{
-          UserModel _user = UserModel(id: _auth.currentUser!.uid, name: _auth.currentUser!.displayName, email: _auth.currentUser!.email, imageUrl: _auth.currentUser!.photoURL, createdAt: Timestamp.now());
-
-          if(await Database().createUserInDatabase(_user)){
-            Get.put(UserController()).currentUser.value = _user;
+          bool isNew = await Database().isNewUser(_auth.currentUser);
+          UserModel _user = UserModel(id: _auth.currentUser!.uid, name: _auth.currentUser!.displayName, email: _auth.currentUser!.email, imageUrl: _auth.currentUser!.photoURL, createdAt: Timestamp.now(), bio: "Your Bio");
+          if(isNew){
+            if(await Database().createUserInDatabase(_user)){
+              Get.put(UserController()).currentUser.value = _user;
+            }else{
+              Get.put(UserController()).currentUser.value = _user;
+            }
           }
         });
       }catch(e){

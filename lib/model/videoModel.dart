@@ -8,6 +8,7 @@ class VideoModel {
   String? imageUrl;
   String videoUrl = "";
   Timestamp? timestamp;
+  String? caption;
 
   VideoModel(
       this.uid,
@@ -15,7 +16,7 @@ class VideoModel {
       this.email,
       this.imageUrl,
       this.videoUrl,
-      this.timestamp);
+      this.timestamp, this.caption);
 
   // List<CommentsModel>? commentsModel;
 
@@ -26,6 +27,7 @@ class VideoModel {
     this.imageUrl = doc.data()!['imageUrl'];
     this.videoUrl = doc.data()!['videoUrl'];
     this.timestamp = doc.data()!['createdAt'];
+    this.caption = doc.data()!['caption'];
     // this.commentsModel = json['name'];
   }
 }

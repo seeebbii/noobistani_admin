@@ -9,6 +9,7 @@ class UserController extends GetxController {
   var currentUser = UserModel().obs;
   var listOfVideos = <VideoModel>[].obs;
   var listOfControllers = <VideoPlayerController>[].obs;
+  var listOfUserVideos = <VideoModel>[].obs;
 
 
   void initializeData(){

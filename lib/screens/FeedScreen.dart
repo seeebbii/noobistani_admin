@@ -1,9 +1,11 @@
 import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:intl/intl.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:noobistani_admin/controllers/userController.dart';
 import 'package:noobistani_admin/screens/uploadVideoScreen.dart';
+import 'package:noobistani_admin/utilities/MyBehavior.dart';
 import 'package:video_player/video_player.dart';
 
 class FeedScreen extends StatefulWidget {
@@ -38,6 +40,23 @@ class _FeedScreenState extends State<FeedScreen>
     });
   }
 
+  String readTimestamp(int timestamp) {
+    var now = new DateTime.now();
+    var format = new DateFormat('HH:mm a');
+    var date = new DateTime.fromMicrosecondsSinceEpoch(timestamp);
+    var diff = date.difference(now);
+    var time = '';
+
+    if (diff.inSeconds <= 0 || diff.inSeconds > 0 && diff.inMinutes == 0 || diff.inMinutes > 0 && diff.inHours == 0 || diff.inHours > 0 && diff.inDays == 0) {
+      time = format.format(date); // Doesn't get called when it should be
+    } else {
+      time = diff.inDays.toString() + 'DAYS AGO'; // Gets call and it's wrong date
+    }
+
+    return time;
+  }
+
+
   @override
   void initState() {
     super.initState();
@@ -48,71 +67,77 @@ class _FeedScreenState extends State<FeedScreen>
     return Scaffold(
       body: GetX<UserController>(builder: (controller) {
         if (controller.listOfVideos.isNotEmpty) {
-          return ListView.builder(
-            itemBuilder: (_, index) {
-              return Padding(
-                padding:
-                    const EdgeInsets.symmetric(vertical: 5, horizontal: 10),
-                child: Column(
-                  children: [
-                    Divider(
-                      height: 5,
-                      thickness: 0.5,
-                      color: Colors.grey.shade800,
-                    ),
-                    SizedBox(
-                      height: 10,
-                    ),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      children: [
-                        CircleAvatar(
-                          backgroundImage: NetworkImage(
-                              "${controller.listOfVideos[index].imageUrl}"),
-                        ),
-                        Padding(
-                          padding: const EdgeInsets.only(left: 8),
-                          child: Text("${controller.listOfVideos[index].name}"),
-                        ),
-                        Text(
-                            "${controller.listOfVideos[index].timestamp!.toDate()}")
-                      ],
-                    ),
-                    SizedBox(
-                      height: 10,
-                    ),
-                    controller.listOfControllers[index].value.isInitialized
-                        ? GestureDetector(
-                            onTap: () {
-                              if (controller
-                                  .listOfControllers[index].value.isPlaying) {
-                                controller.listOfControllers[index].pause();
-                              } else {
-                                controller.listOfControllers[index].play();
-                              }
-                            },
-                            child: AspectRatio(
-                              aspectRatio: controller
-                                  .listOfControllers[index].value.aspectRatio,
-                              child: VideoPlayer(
-                                  controller.listOfControllers[index]),
-                            ))
-                        : GestureDetector(
-                            onTap: () {
-                              setState(() {});
-                            },
-                            child: AspectRatio(
-                              aspectRatio: controller
-                                  .listOfControllers[index].value.aspectRatio,
-                              child: VideoPlayer(
-                                  controller.listOfControllers[index]),
-                            ),
+          return ScrollConfiguration(
+            behavior: MyBehavior(),
+            child: ListView.builder(
+              cacheExtent: 500,
+              itemBuilder: (_, index) {
+                return Padding(
+                  padding:
+                      const EdgeInsets.symmetric(vertical: 5, horizontal: 10),
+                  child: Column(
+                    children: [
+                      Divider(
+                        height: 5,
+                        thickness: 0.5,
+                        color: Colors.grey.shade800,
+                      ),
+                      SizedBox(
+                        height: 10,
+                      ),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        children: [
+                          CircleAvatar(
+                            backgroundImage: NetworkImage(
+                                "${controller.listOfVideos[index].imageUrl}"),
+                          ),
+                          Padding(
+                            padding: const EdgeInsets.only(left: 8),
+                            child: Text("${controller.listOfVideos[index].name}"),
+                          ),
+                          Padding(
+                            padding: const EdgeInsets.only(left: 50),
+                            child: Text(
+                                "${DateTime.fromMicrosecondsSinceEpoch(controller.listOfVideos[index].timestamp!.microsecondsSinceEpoch)}"),
                           )
-                  ],
-                ),
-              );
-            },
-            itemCount: controller.listOfVideos.length,
+                        ],
+                      ),
+                      SizedBox(
+                        height: 10,
+                      ),
+                      controller.listOfControllers[index].value.isInitialized
+                          ? GestureDetector(
+                              onTap: () {
+                                if (controller
+                                    .listOfControllers[index].value.isPlaying) {
+                                  controller.listOfControllers[index].pause();
+                                } else {
+                                  controller.listOfControllers[index].play();
+                                }
+                              },
+                              child: AspectRatio(
+                                aspectRatio: controller
+                                    .listOfControllers[index].value.aspectRatio,
+                                child: VideoPlayer(
+                                    controller.listOfControllers[index]),
+                              ))
+                          : GestureDetector(
+                              onTap: () {
+                                setState(() {});
+                              },
+                              child: AspectRatio(
+                                aspectRatio: 9/16,
+                                child: VideoPlayer(
+                                    controller.listOfControllers[index]),
+                              ),
+                            )
+                    ],
+                  ),
+                );
+              },
+              itemCount: controller.listOfVideos.length,
+            ),
           );
         } else {
           return Center(
